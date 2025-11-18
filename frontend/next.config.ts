@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
+/** @type {import('next').NextConfig} */
+const isCI = process.env.GITHUB_ACTIONS === "true";
+
 const nextConfig: NextConfig = {
-  //output: 'export',
+  ...(isCI ? { output: "export" } : {}),
+  images: {
+    unoptimized: true, // required for GitHub Pages
+  },
 };
 
 export default nextConfig;
