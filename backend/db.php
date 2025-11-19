@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/load_env.php';
-loadEnv(__DIR__ . '../.env');
+loadEnv(__DIR__ . '/../.env');
 
 function getConnection(): mysqli {
     $host = $_ENV['DB_HOST'];
