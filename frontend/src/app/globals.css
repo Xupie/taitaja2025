@@ -6,6 +6,9 @@
 
   --color-primary: #00A1E4;
   --color-primary-hover: #0292cf;
+
+  --color-error-bg: #fa7373;
+  --color-error-text: #bd4f4f;
   
   --color-foreground-hover: #445564;
 }
@@ -16,6 +19,9 @@
 
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
+
+  --color-error-bg: var(--color--error-bg);
+  --color-error-text: var(--color--error-text);
 
   --font-inter: var(--font-inter);
   --font-lexend-deca: var(--font-lexend-deca);
@@ -71,4 +77,16 @@ body {
 
 .nav-link:hover {
   color: var(--color-primary);
+}
+
+.basic-input {
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 0.5rem;
+  border-radius: 0.33rem;
+  border: solid 0.2rem var(--color-primary);
+}
+
+input {
+  outline: none;
 }
