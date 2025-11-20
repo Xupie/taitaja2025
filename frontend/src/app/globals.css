@@ -7,8 +7,10 @@
   --color-primary: #00A1E4;
   --color-primary-hover: #0292cf;
 
+  --background-secondary: #e4e5e5;
+
   --color-error-bg: #fa7373;
-  --color-error-text: #bd4f4f;
+  --color-error-text: #9f4141;
   
   --color-foreground-hover: #445564;
 }
@@ -17,11 +19,13 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
+  --background-secondary: var(--background-secondary);
+
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
 
-  --color-error-bg: var(--color--error-bg);
-  --color-error-text: var(--color--error-text);
+  --color-error-bg: var(--color-error-bg);
+  --color-error-text: var(--color-error-text);
 
   --font-inter: var(--font-inter);
   --font-lexend-deca: var(--font-lexend-deca);
@@ -48,6 +52,7 @@ body {
   border-radius: 4px;
   transition: cubic-bezier();
   transition-duration: 350ms;
+  cursor: pointer;
 }
 
 .btn-secondary {
