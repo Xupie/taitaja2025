@@ -5,14 +5,17 @@
   --foreground: #2B3E50;
 
   --color-primary: #00A1E4;
-
+  --color-primary-hover: #0292cf;
+  
+  --color-foreground-hover: #445564;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --color-primary:: var(--color-primary);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
 
   --font-inter: var(--font-inter);
   --font-lexend-deca: var(--font-lexend-deca);
@@ -35,22 +38,37 @@ body {
 }
 
 .btn {
-  background-color: var(--color-primary);
   padding: 0.5rem;
-  color: white;
   border-radius: 4px;
+  transition: cubic-bezier();
+  transition-duration: 350ms;
+}
+
+.btn-secondary {
+  background-color: var(--color-foreground);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-foreground-hover);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
 }
 
 .nav-link {
   font-family: var(--font-inter);
   font-size: 1.2rem;
+  transition: cubic-bezier();
+  transition-duration: 350ms;
 }
 
 .nav-link:hover {
   color: var(--color-primary);
-}
-
-.nav-link {
-  transition: cubic-bezier();
-  transition-duration: 350ms;
 }
