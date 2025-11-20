@@ -27,8 +27,6 @@ if (isset($_POST['login'])) {
         $error = "Kayttäjää ei löytynyt";
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>

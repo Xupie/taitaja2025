@@ -1,1 +1,6 @@
 .env
+
+.log
+
+data/
+data/*
