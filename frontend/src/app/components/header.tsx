@@ -1,5 +1,7 @@
 'use client'
+import Image from 'next/image';
 import Link from 'next/link';
+import { HamburgerMenu } from './logo';
 import { useState } from 'react';
 
 export default function Header() {
@@ -17,15 +19,22 @@ export default function Header() {
     return (
         <header>
             <nav className='w-full flex flex-col md:flex-row justify-between items-center'>
-
                 {/* desktop nav */}
                 <div className='hidden md:flex px-20 py-4 w-full items-center justify-between'>
-                    <ul className='flex gap-8'>
+                    <ul className='flex gap-8 items-center'>
+                        <Image 
+                            src={"logo.png"} 
+                            alt='logo'
+                            width={0}
+                            height={0}
+                            style={imageStyle}
+                            loading={"lazy"}
+                        />
                         <Link className='nav-link' href='/'>Etusivu</Link>
                     </ul>
 
                     <div className='flex items-center gap-4'>
-                        <Link className='nav-link' href='/login'>Kirjaudu Sisään</Link>
+                        <button className='btn btn-secondary'><Link className='font-inter' href='/login'>Kirjaudu Sisään</Link></button>
                     </div>
                 </div>
 
@@ -34,10 +43,11 @@ export default function Header() {
                     <button
                         type='button'
                         onClick={() => handleClick()}
-                        className={` ms-auto mt-2 items-center  ${isMenuOpen ? 'rotate-90' : 'rotate-0'} transition delay-50 duration-300 `}
+                        className={`ms-auto mt-2 items-center  ${isMenuOpen ? 'rotate-90' : 'rotate-0'} transition delay-50 duration-300 `}
                         aria-controls='mobile-nav'
                         aria-expanded={isMenuOpen}
                     >
+                        <HamburgerMenu />
                     </button>
 
                     {isMenuOpen && (
@@ -59,4 +69,9 @@ export default function Header() {
             </nav>
         </header>
     );
+}
+
+const imageStyle = {
+  height: 'auto',
+  width: '20%',
 }
