@@ -1,12 +1,12 @@
 'use client'
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export default async function GameId({ params }: { params: { id: string } }) {
-    const { id } = params;
-
+    const { id } = useParams();
     const router = useRouter()
-    const response = await fetch(`/game?id=${id}`, {
+    
+    const response = await fetch(`/api/game?id=${id}`, {
         method: 'GET',
         credentials: 'include',
     });
