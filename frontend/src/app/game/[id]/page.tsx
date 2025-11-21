@@ -1,24 +1,40 @@
 'use client'
 
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import GameClient from "./gameClient";
 
-export default async function GameId({ params }: { params: { id: string } }) {
-    const { id } = useParams();
-    const router = useRouter()
-    
-    const response = await fetch(`/api/game?id=${id}`, {
-        method: 'GET',
-        credentials: 'include',
-    });
+export default function GameId() {
+    const { id } = useParams<{ id: string; }>();
+    const router = useRouter();
+    const [loading, setLoading] = useState(true);
 
-    if (!response.ok) {
-        return router.push("/game");
-    }
+    useEffect(() => {
+        if (!id) return;
 
-    const data = await response.json();
+        async function getData() {
+            const response = await fetch(`/api/game?id=${id}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                //return router.push("/game");
+            }
+            const data = await response.json();
+
+            setLoading(false);
+            return data;
+        }
+
+        getData();
+    }, [id, router]);
+
+    //if (loading) return <p>Loading...</p>
 
     return (
         <main>
+            <GameClient />
             <h1>Game ID: {id}</h1>
         </main>
     );

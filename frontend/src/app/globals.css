@@ -13,6 +13,11 @@
   --color-error-text: #9f4141;
   
   --color-foreground-hover: #445564;
+
+  --color-game-blue: #00A1E4;
+  --color-game-green: #00e489;
+  --color-game-red: #e83737;
+  --color-game-magenta: #d942ea;
 }
 
 @theme inline {
@@ -29,6 +34,11 @@
 
   --font-inter: var(--font-inter);
   --font-lexend-deca: var(--font-lexend-deca);
+
+  --color-game-blue: var(--color-game-blue);
+  --color-game-green: var(--color-game-green);
+  --color-game-red: var(--color-game-red);
+  --color-game-magenta: var(--color-game-magenta);
 }
 
 /*
