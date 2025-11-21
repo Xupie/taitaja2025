@@ -1,30 +1,47 @@
 'use client'
+import { useEffect, useState } from "react";
+import Card, { GameCard } from "@/components/card";
 
-import Card from "@/components/card";
 
-export default function GameClient() {
+type GameClientProps = {
+    id: string;
+}
+
+export default function GameClient({ id }: GameClientProps) {
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!id) return;
+
+        async function getData() {
+            const response = await fetch(`/api/game?id=${id}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            const data = await response.json();
+
+            setLoading(false);
+            return data;
+        }
+
+        getData();
+    }, [id]);
+
+    //if (loading) return <p>Loading...</p>
 
     return (
-        <main>
-            <p></p>
-            <h1></h1>
-            <div className="grid-cols-2">
-                <div className="grid-rows-2">
-                    <Card bgClass="bg-game-blue">
-                        <h2>Hello world!</h2>
-                    </Card>
-                    <Card bgClass="bg-game-green">
-                        <h2>Hello world!</h2>
-                    </Card>
-                </div>
-                <div>
-                    <Card bgClass="bg-game-red">
-                        <h2>Hello world!</h2>
-                    </Card>
-                    <Card bgClass="bg-game-magenta">
-                        <h2>Hello world!</h2>
-                    </Card>
-                </div>
+        <main className="justify-center items-center">
+            <div className="text-center mb-4">
+                <p>Kysymys 0/10</p>
+                <h1 className="text-3xl ">Kysymys</h1>
+            </div>
+
+            
+            <div className="grid grid-cols-2 md:gap-4 w-full md:my-6 md:px-6">
+                <GameCard bgClass="bg-game-blue" text="Card 1" onClick={() => console.log("1")} />
+                <GameCard bgClass="bg-game-green" text="Card 2" onClick={() => console.log("2")} />
+                <GameCard bgClass="bg-game-red" text="Card 3" onClick={() => console.log("3")} />
+                <GameCard bgClass="bg-game-magenta" text="Card 4" onClick={() => console.log("4")} />
             </div>
         </main>
     );
