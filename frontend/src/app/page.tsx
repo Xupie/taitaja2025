@@ -58,5 +58,4 @@ export default function Home() {
 const imageStyle = {
   height: 'auto',
   width: '90%',
-
 }

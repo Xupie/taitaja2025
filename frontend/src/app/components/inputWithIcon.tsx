@@ -1,5 +1,3 @@
-'use client'
-
 type InputWithIconProps = {
   name: string;
   type?: string;
@@ -8,7 +6,7 @@ type InputWithIconProps = {
   icon: string; // /public folder
 };
 
-//TODO: fix image overlap with text, requirements for password
+//TODO: requirements for password/email
 export default function InputWithIcon({
   name,
   type = "text",
@@ -27,10 +25,10 @@ export default function InputWithIcon({
         bg-no-repeat
         bg-[left_10px_center]
         bg-[length:20px_20px]
-        pl-12
       "
       style={{
         backgroundImage: `url('${icon}')`,
+        paddingLeft: "2.5rem",
       }}
     />
   );

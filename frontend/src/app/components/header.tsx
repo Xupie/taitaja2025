@@ -23,7 +23,7 @@ export default function Header() {
                 <div className='hidden md:flex px-20 py-4 w-full items-center justify-between'>
                     <ul className='flex gap-8 items-center'>
                         <Image 
-                            src={"logo.png"} 
+                            src="/logo.png"
                             alt='logo'
                             width={0}
                             height={0}

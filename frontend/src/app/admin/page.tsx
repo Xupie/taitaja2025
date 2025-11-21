@@ -1,19 +1,30 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function Admin() {
-  const router = useRouter()
-  const response = await fetch("/admin", {
-    method: 'GET',
-    credentials: 'include',
-  });
+export default function Admin() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
-  if (!response.ok) {
-    return router.push("/");
-  }
+  useEffect(() => {
+    async function checkAuth() {
+      const response = await fetch("/api/admin", {
+        method: 'GET',
+        credentials: 'include',
+      });
 
-  const data = await response.json();
+      if (!response.ok) {
+        router.push("/");
+        return;
+      }
+      setLoading(true);
+    }
+    
+    checkAuth();
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>
 
   return (
     <main>

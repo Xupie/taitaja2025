@@ -71,7 +71,7 @@ export default function Login() {
                 : ""}
             </div>
 
-            <Button_Primary onClick={sendLogin} disabled={loading} text={loading ? "Kirjaudutaan..." : "Kirjaudu"} height={"10"} width={"full"} />
+            <Button_Primary onClick={sendLogin} disabled={loading} text={loading ? "Kirjaudutaan..." : "Kirjaudu"} height={"10"} width={"100%"} />
           </div>
         </Card>
 
