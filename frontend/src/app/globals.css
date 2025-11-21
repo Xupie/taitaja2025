@@ -7,7 +7,7 @@
   --color-primary: #00A1E4;
   --color-primary-hover: #0292cf;
 
-  --background-secondary: #e4e5e5;
+  --color-secondary: #ededed;
 
   --color-error-bg: #fa7373;
   --color-error-text: #9f4141;
@@ -19,7 +19,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --background-secondary: var(--background-secondary);
+  --color-secondary: var(--color-secondary);
 
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);

@@ -2,19 +2,21 @@
 import { ReactNode } from 'react';
 
 type CardProps = {
-    color?: string;
+    bgClass?: string;
     border?: boolean;
     children: ReactNode;
 }
 
 export default function Card(
     {
-        color = "foreground",
+        bgClass = "bg-foreground",
         children,
         border = true,
     }: CardProps) {
     return (
-        <article className={`${border ? "border-2" : "" } rounded-2xl p-5 bg-${color}`}>
+        <article 
+            className={`${bgClass} ${border ? "border-2" : "" } rounded-2xl p-5`}
+        >
             {children}
         </article>
     );

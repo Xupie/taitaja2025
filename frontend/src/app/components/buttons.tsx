@@ -17,6 +17,11 @@ export default function Button_Primary(
         disabled = false,
     }: ButtonPrimaryProps) {
     return (
-        <button onClick={onClick} disabled={disabled} className={`btn btn-primary bg-foreground h-${height} w-${width} disabled:opacity-50`}>{text}</button>
+        <button 
+            onClick={onClick} 
+            disabled={disabled} 
+            className={`btn btn-primary bg-foreground disabled:opacity-50`}
+            style={{ width, height }}
+        >{text}</button>
     );
 }
