@@ -1,6 +1,8 @@
 <?php
 
-include "db.php"; 
+header('Content-Type: application/json');
+
+include "db.php";
 $conn = getConnection();
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -18,15 +20,14 @@ if (isset($_POST['login'])) {
 
         if (password_verify($salasana, $opettaja['salasana'])) {
             $_SESSION['opettaja'] = $opettaja;
-            header("Location: index.php");
-            exit;
+            http_response_code(200);
+            echo json_encode(["status" => "successfully logged in"]);
         } else {
-            $error = "Väärä salasana!";
+            http_response_code(400);
+            echo json_encode(["error" => "Väärä salasana!"]);
         }
     } else {
-        $error = "Kayttäjää ei löytynyt";
+        http_response_code(400);
+        echo json_encode(["error" => "Kayttäjää ei löytynyt"]);
     }
 }
-?>
-
-

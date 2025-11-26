@@ -18,7 +18,7 @@ export default function Admin() {
         router.push("/");
         return;
       }
-      setLoading(true);
+      setLoading(false);
     }
     
     checkAuth();

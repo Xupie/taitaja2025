@@ -5,7 +5,7 @@ export async function generateStaticParams() {
 }
 
 export default async function GameId({ params, }: {params: Promise<{ id: string}>}) {
-    const { id } = await params
+    const { id } = await params;
     return (
         <main>
             <h1 className="text-right me-2">Game ID: {id}</h1>
