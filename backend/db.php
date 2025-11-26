@@ -5,12 +5,13 @@ loadEnv(__DIR__ . '/../.env');
 
 function getConnection(): mysqli {
     $host = $_ENV['DB_HOST'];
+    $port = $_ENV['DB_PORT'];
     $user = $_ENV['DB_USER'];
     $pass = $_ENV['DB_PASS'];
     $name = $_ENV['DB_NAME'];
 
     // Create connection
-    $conn = new mysqli($host, $user, $pass, $name);
+    $conn = new mysqli($host, $user, $pass, $name, $port);
 
     // Check connection
     if ($conn->connect_error) {

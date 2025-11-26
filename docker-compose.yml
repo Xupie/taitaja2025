@@ -1,0 +1,52 @@
+
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html/backend
+      - .env:/var/www/html/.env
+      - ./apache-cors.conf:/etc/apache2/conf-enabled/cors.conf
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-dev
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASS}
+    ports:
+      - "8081:80"
+    depends_on:
+      - db  
+
+
+volumes:
+  mysql_data:
