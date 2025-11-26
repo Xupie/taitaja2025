@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // required for GitHub Pages
   },
+  crossOrigin: "use-credentials",
 };
 
 export default nextConfig;

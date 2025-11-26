@@ -26,14 +26,15 @@ export default function Login() {
       const response = await fetch("http://localhost:8080/backend/login.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: email, salasana: password })
+        body: JSON.stringify({ name: email, password: password }),
+        credentials: 'include',
       });
 
       const data = await response.json();
 
       if (!response.ok) {
         setError(true);
-        console.log("Virhe kirjautumissa: " + data.message);
+        console.log("Virhe kirjautumissa: " + data.error);
       } else {
         alert("Kirjautuminen onnistui!");
       }
@@ -74,8 +75,6 @@ export default function Login() {
             <Button_Primary onClick={sendLogin} disabled={loading} text={loading ? "Kirjaudutaan..." : "Kirjaudu"} height={"10"} width={"100%"} />
           </div>
         </Card>
-
-
     </main>
   );
 }
