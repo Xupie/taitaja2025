@@ -1,30 +1,40 @@
 <?php
+include "db.php";
 
 header('Content-Type: application/json');
 
-include "db.php";
 $conn = getConnection();
+$method = $_SERVER["REQUEST_METHOD"];
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
-if (isset($_POST['login'])) {
-    $opettajanimi = $conn->real_escape_string($_POST['name']);
-    $salasana = $_POST['salasana'];
+if ($method == 'POST') {
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    $res = $conn->query("SELECT * FROM opettajat WHERE nimi='$opettajanimi'");
+    if (!isset($data['name']) || !isset($data['password'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Puuttuvat tiedot"]);
+        exit;
+    }
 
-    if ($res->num_rows == 1) {
-        $opettaja = $res->fetch_assoc();
+    $username = $data['name'];
+    $password = $data['password'];
 
-        if (password_verify($salasana, $opettaja['salasana'])) {
-            $_SESSION['opettaja'] = $opettaja;
+    $stmt = $conn->prepare("SELECT * FROM teachers WHERE username=?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    if ($res->num_rows === 1) {
+        $user = $res->fetch_assoc();
+
+        if (password_verify($password, $user['password_hash'])) {
+            $_SESSION['username'] = $username;
             http_response_code(200);
-            echo json_encode(["status" => "successfully logged in"]);
+            echo json_encode(["status" => "Kirjautuminen onnistui"]);
         } else {
             http_response_code(400);
-            echo json_encode(["error" => "Väärä salasana!"]);
+            echo json_encode(["error" => "Virhe käyttäjätunnuksessa tai salasanassa"]);
         }
     } else {
         http_response_code(400);
