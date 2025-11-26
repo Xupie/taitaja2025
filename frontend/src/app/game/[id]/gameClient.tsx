@@ -17,7 +17,8 @@ type GameQuestionsType = {
 
 export default function GameClient({ id }: GameClientProps) {
     const [loading, setLoading] = useState(true);
-    const [game, setGame] = useState<GameQuestionsType | null>(null);
+    const [questions, setQuestions] = useState<GameQuestionsType[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         if (!id) return;
@@ -27,8 +28,8 @@ export default function GameClient({ id }: GameClientProps) {
                 method: 'GET',
                 credentials: 'include',
             });
-            const data: GameQuestionsType = await response.json();
-            setGame(data);
+            const data: GameQuestionsType[] = await response.json();
+            setQuestions(data);
             setLoading(false);
         }
 
@@ -38,10 +39,10 @@ export default function GameClient({ id }: GameClientProps) {
     async function sendAnswer(answer: string) {
         setLoading(true);
 
-        const response = await fetch(`http://localhost:8080/backend/game.php?id=${id}`, {
+        const response = await fetch(`http://localhost:8080/backend/game.php`, {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify(answer),
+            body: JSON.stringify({ answer }),
         });
         const data = await response.json();
 
@@ -51,24 +52,29 @@ export default function GameClient({ id }: GameClientProps) {
         else {
             console.log("incorrect")
         }
+
+        setCurrentIndex(prev => prev++);
         setLoading(false);
     }
 
     if (loading) return <p>Loading...</p>
 
+    const currentQuestion = questions[currentIndex];
+    if (!currentQuestion) return <p>Game over!</p>
+
     return (
         <main className="justify-center items-center">
             <div className="text-center mb-4">
-                <p>Kysymys 0/10</p>
-                <h1 className="text-3xl ">Kysymys</h1>
+                <p>Kysymys {currentIndex + 1}/{questions.length}</p>
+                <h1 className="text-3xl">{currentQuestion.question}</h1>
             </div>
 
 
             <div className="grid grid-cols-2 md:gap-4 w-full md:my-6 md:px-6">
-                <GameCard bgClass="bg-game-blue" text={game?.option_a} onClick={() => sendAnswer("A")} />
-                <GameCard bgClass="bg-game-green" text={game?.option_b} onClick={() => sendAnswer("B")} />
-                <GameCard bgClass="bg-game-red" text={game?.option_c} onClick={() => sendAnswer("C")} />
-                <GameCard bgClass="bg-game-magenta" text={game?.option_d} onClick={() => sendAnswer("D")} />
+                <GameCard bgClass="bg-game-blue" text={currentQuestion.option_a} onClick={() => sendAnswer("A")} />
+                <GameCard bgClass="bg-game-green" text={currentQuestion.option_b} onClick={() => sendAnswer("B")} />
+                <GameCard bgClass="bg-game-red" text={currentQuestion.option_c} onClick={() => sendAnswer("C")} />
+                <GameCard bgClass="bg-game-magenta" text={currentQuestion.option_d} onClick={() => sendAnswer("D")} />
             </div>
         </main>
     );
