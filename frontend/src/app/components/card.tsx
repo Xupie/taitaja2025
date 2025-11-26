@@ -8,7 +8,7 @@ type CardProps = {
 
 type GameCardProps = {
     bgClass: string;
-    text: string;
+    text?: string;
     onClick?: () => void;
 }
 

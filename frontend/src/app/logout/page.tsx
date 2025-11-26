@@ -12,7 +12,7 @@ export default function Logout() {
         cookieStore.delete("PHPSESSID")
         router.push("/");
         return;
-    })
+    }, [])
 
     return (
         <p>Logging out</p>
