@@ -6,7 +6,6 @@ type GameClientProps = {
     id: string;
 }
 
-
 type GameQuestionsType = {
     question: string;
     option_a: string;
@@ -18,12 +17,25 @@ type GameQuestionsType = {
 type GameDataType = {
     questions: GameQuestionsType[];
     questionIndex: number;
+    correct_count: number;
 }
+
+type GameAnswer = {
+    status: string;
+    correct_count: number;
+}
+
+type GameLeaderboards = {
+    username: string;
+    correct_answers: number;
+}[];
 
 export default function GameClient({ id }: GameClientProps) {
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState<GameQuestionsType[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [correctCount, setCorrectCount] = useState(0);
+    const [leaderboards, setLeaderboards] = useState<GameLeaderboards>([]);
 
     async function sendAnswer(answer: string) {
         const response = await fetch(`http://localhost:8080/backend/game.php`, {
@@ -32,13 +44,29 @@ export default function GameClient({ id }: GameClientProps) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ answer: answer, gameId: id }),
         });
-        const data = await response.json();
+        const data: GameAnswer = await response.json();
 
-        if (data['status'] == "Correct") console.log("correct");
-        else console.log("incorrect");
+        if (data.status === "Correct") {
+            setCorrectCount(data.correct_count);
+        }
 
         setCurrentIndex(prev => prev + 1);
     }
+
+    useEffect(() => {
+        if (!loading && questions.length && currentIndex >= questions.length) {
+            async function getLeaderboards() {
+                const response = await fetch(`http://localhost:8080/backend/game_leaderboards.php?id=${id}`, {
+                    method: 'GET',
+                });
+                const data: GameLeaderboards = await response.json();
+
+                setLeaderboards(data);
+            }
+            getLeaderboards();
+        }
+    }, [loading, questions, currentIndex]);
+
 
     useEffect(() => {
         if (!id) return;
@@ -53,6 +81,7 @@ export default function GameClient({ id }: GameClientProps) {
             console.log(data);
             setQuestions(data.questions);
             setCurrentIndex(data.questionIndex);
+            setCorrectCount(data.correct_count);
             setLoading(false);
         }
 
@@ -62,7 +91,50 @@ export default function GameClient({ id }: GameClientProps) {
     if (loading) return <p>Loading...</p>
 
     const currentQuestion = questions[currentIndex];
-    if (!currentQuestion) return <p>Peli päättyi</p>
+
+    // game ended
+    if (!currentQuestion) {
+        return (
+            <div>
+                <div className="text-center my-20 text-xl">
+                    <p>Peli päättyi</p>
+                    <p>Vastasit oikein {correctCount}/{questions.length} kysymykseen</p>
+                </div>
+
+                <div className="m-6 flex justify-center">
+                    <div className="w-full max-w-4xl">
+                        <h2 className="text-4xl font-extrabold text-center mb-6 text-gray-800">
+                            Leaderboards
+                        </h2>
+                        <div>
+                            {leaderboards.length > 0 ? (
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {leaderboards.map((user, index) => (
+                                        <li
+                                            key={index}
+                                            className="bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                                        >
+                                            <span className="text-xl font-semibold text-gray-900">
+                                                {user.username}
+                                            </span>
+                                            <span className="text-gray-600 mt-2">
+                                                Oikein vastattu: {user.correct_answers}/{questions.length}
+                                            </span>
+                                            <span className="text-sm text-gray-400 mt-1">
+                                                Sija #{index + 1}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-center text-gray-500 text-lg">Loading leaderboards...</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <main className="justify-center items-center">

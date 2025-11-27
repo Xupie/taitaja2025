@@ -47,23 +47,31 @@ if ($method == 'POST') {
         exit;
     }
 
-    $questionId = $result["id"];
     $correct = $result["correct_option"];
     $isCorrect = ($answer === $correct) ? 1 : 0;
 
-    // add answer to user_answers
-    $stmt = $conn->prepare("
-        INSERT INTO user_answers (user_id, question_id, answer, is_correct)
-        VALUES (?, ?, ?, ?)
-    ");
-    $stmt->bind_param("iisi", $userId, $questionId, $answer, $isCorrect);
-    $stmt->execute();
+    // Add correct options to session to show it at the end
+    if (!isset($_SESSION["games"][$gameId]["correct_count"])) {
+        $_SESSION["games"][$gameId]["correct_count"] = 0;
+    }
+    if ($isCorrect) {
+        $_SESSION["games"][$gameId]["correct_count"]++;
+
+        // add answer to user_answers if it's correct
+        $stmt = $conn->prepare("
+            INSERT INTO user_answers (user_id, category_id)
+            VALUES (?, ?)
+        ");
+        $stmt->bind_param("ii", $userId, $game);
+        $stmt->execute();
+    }
 
     // move to next question
     $_SESSION["games"][$gameId]["question"]++;
 
     echo json_encode([
-        "status" => $isCorrect ? "Correct" : "Incorrect"
+        "status" => $isCorrect ? "Correct" : "Incorrect",
+        "correct_count" => $_SESSION["games"][$gameId]["correct_count"],
     ]);
     exit;
 }
@@ -78,6 +86,12 @@ if ($method == 'GET') {
         // Check session for last question
         if (isset($_SESSION["games"][$id])) {
             $currentIndex = $_SESSION["games"][$id]['question'];
+        }
+
+        $correct_count = 0;
+        // check session for correctly answered count
+        if (isset($_SESSION["games"][$id]["correct_count"])) {
+            $correct_count = $_SESSION["games"][$id]["correct_count"];
         }
 
         $stmt = $conn->prepare("
@@ -98,6 +112,7 @@ if ($method == 'GET') {
         echo json_encode([
             "questions" => $options,
             "questionIndex" => $currentIndex,
+            "correct_count" => $correct_count,
         ]);
         exit;
 
