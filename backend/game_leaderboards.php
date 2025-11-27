@@ -18,7 +18,7 @@ if ($method == 'GET') {
             WHERE user_answers.category_id = ?
             GROUP BY user_id 
             ORDER BY correct_answers DESC
-            LIMIT 10;
+            LIMIT 12;
         ");
         $stmt->bind_param("i", $id);
         $stmt->execute();

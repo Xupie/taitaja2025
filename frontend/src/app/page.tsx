@@ -19,7 +19,7 @@ export default function Home() {
         </div>
         <Image
           className="shadow-[0px_4px_16px_rgba(17,17,26,0.1),0px_8px_24px_rgba(17,17,26,0.1),0px_16px_56px_rgba(17,17,26,0.1)]"
-          src={`img1.jpg`}
+          src={`/img1.jpg`}
           alt={"img"}
           width={0}
           height={0}
@@ -30,7 +30,7 @@ export default function Home() {
       <div className="grid grid-cols-2 my-6 items-center">
         <Image
           className="shadow-[0px_4px_16px_rgba(17,17,26,0.1),0px_8px_24px_rgba(17,17,26,0.1),0px_16px_56px_rgba(17,17,26,0.1)]"
-          src={`img2.jpg`}
+          src={`/img2.jpg`}
           alt={"img"}
           width={0}
           height={0}

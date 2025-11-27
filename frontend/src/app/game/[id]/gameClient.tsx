@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import { GameCard } from "@/components/card";
+import { useRouter } from "next/navigation";
 
 type GameClientProps = {
     id: string;
@@ -45,6 +46,13 @@ export default function GameClient({ id }: GameClientProps) {
             body: JSON.stringify({ answer: answer, gameId: id }),
         });
         const data: GameAnswer = await response.json();
+
+        // No session
+        if (response.status === 401) {
+            const router = useRouter();
+            router.push("/game");
+            return;
+        }
 
         if (data.status === "Correct") {
             setCorrectCount(data.correct_count);

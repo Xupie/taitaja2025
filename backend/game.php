@@ -20,7 +20,7 @@ if ($method == 'POST') {
     $gameId = $data["gameId"];
 
     if (!isset($_SESSION["games"][$gameId])) {
-        http_response_code(400);
+        http_response_code(401);
         echo json_encode(["status" => "no game session"]);
         exit;
     }

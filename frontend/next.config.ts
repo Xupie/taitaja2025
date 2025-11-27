@@ -4,8 +4,8 @@ import type { NextConfig } from "next";
 const isCI = process.env.GITHUB_ACTIONS === "true";
 
 const nextConfig: NextConfig = {
-  ...(isCI ? { 
-    output: "export", 
+  ...(isCI ? {
+    output: "export",
     basePath: "/taitaja2025",
     assetPrefix: "/taitaja2025/",
   } : {

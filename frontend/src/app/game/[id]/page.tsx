@@ -25,13 +25,12 @@ export default function GameDescription({ params, }: { params: Promise<{ id: str
         });
 
         const data = await response.json();
-        console.log(data);
         setLoading(false);
 
         if (response.ok) {
             router.push(`/game/${id}/session`);
         } else {
-            alert("Failed to start game: " + data.status);
+            alert("Virhe: " + data.status);
         }
     };
 
