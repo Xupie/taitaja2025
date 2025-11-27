@@ -31,7 +31,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <main className="p-4 text-center w-full flex flex-col items-center gap-3">
+        <div className="p-4 text-center w-full flex flex-col items-center gap-3">
             <h1 className="text-3xl font-bold">Luo uusi opettajatili</h1>
 
             <input id="name" placeholder="Käyttäjänimi" className="border p-2 rounded w-64" />
@@ -46,6 +46,6 @@ export default function RegisterPage() {
             >
                 {loading ? "Odota..." : "Rekisteröidy"}
             </button>
-        </main>
+        </div>
     );
 }

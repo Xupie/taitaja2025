@@ -47,7 +47,7 @@ export default function Login() {
   }
 
   return (
-    <main className="md:max-w-xl md:w-1/3 mx-auto">
+    <div className="md:max-w-xl md:w-1/3 mx-auto">
       <Card>
           <div className="md:w-4/5 mx-auto">
             <h1 className="text-background text-center text-3xl font-bold">Kirjaudu sisään</h1>
@@ -75,6 +75,6 @@ export default function Login() {
             <Button_Primary onClick={sendLogin} disabled={loading} text={loading ? "Kirjaudutaan..." : "Kirjaudu"} height={"10"} width={"100%"} />
           </div>
         </Card>
-    </main>
+    </div>
   );
 }

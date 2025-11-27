@@ -27,11 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${LexendDeca.variable} ${inter.variable} antialiased`}
+        className={`flex flex-col min-h-screen ${LexendDeca.variable} ${inter.variable} antialiased`}
       >
-        <Header/>
-        {children}
-        <Footer/>
+        <Header />
+        <main className="grow">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

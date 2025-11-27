@@ -8,10 +8,10 @@ import Card from "./components/card";
 export default function Home() {
   const router = useRouter();
   return (
-    <main className="md:max-w-3/5 mx-auto my-4">
-      <div className="grid grid-cols-2 my-6 items-center">
+    <div className="md:max-w-3/5 mx-auto">
+      <div className="grid grid-cols-2 my-10 items-center">
         <div className="">
-          <h1 className="text-6xl">Taitaja<br/>Tietotesti</h1>
+          <h1 className="text-6xl">Taitaja<br />Tietotesti</h1>
           <p className="text-xl">Haluatko testata tietosi? Se on nyt helppoa! Valitse opettaja ja aihealue, ja aloita heti!</p>
           <div className="my-4">
             <Button_Primary height="auto" width="10rem" text="Pelaa nyt" onClick={() => router.push("/game")} />
@@ -51,7 +51,8 @@ export default function Home() {
         </div>
 
       </div>
-    </main>
+    </div>
+
   );
 }
 

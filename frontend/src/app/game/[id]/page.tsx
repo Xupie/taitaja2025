@@ -36,16 +36,16 @@ export default function GameDescription({ params, }: { params: Promise<{ id: str
     };
 
     return (
-        <main className="p-4 text-center">
+        <div className="p-4 text-center">
             <h1 className="text-3xl font-bold">{gameInfo.name}</h1>
             <p className="my-4">{gameInfo.description}</p>
 
-            <div className=" flex flex-col gap-1 w-1/4">
+            <div className=" flex flex-col gap-1">
                 <label className="text-left" htmlFor="name">Nimi</label>
                 <input className="justify-center border-2 rounded-md p-1.5" name="username" placeholder="Nimi" id="username" type="text" />
             </div>
 
             <Button_Primary onClick={startGame} text={loading ? "Odota..." : "Pelaa"} height="3rem" width="10rem" />
-        </main>
+        </div>
     );
 }

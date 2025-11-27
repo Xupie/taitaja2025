@@ -27,7 +27,7 @@ export default function Game() {
   if (!games) return <p>Loading...</p>;
 
   return (
-    <main>
+    <div>
       <ul>
         {games?.map((category) => (
           <li key={category.id}>
@@ -37,6 +37,6 @@ export default function Game() {
           </li>
         ))}
       </ul>
-    </main>
+    </div>
   );
 }
