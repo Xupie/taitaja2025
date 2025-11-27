@@ -1,7 +1,6 @@
 "use client"
 
 import Button_Primary from "@/components/buttons";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 
@@ -16,16 +15,20 @@ export default function GameDescription({ params, }: { params: Promise<{ id: str
     const startGame = async () => {
         setLoading(true);
 
-        const res = await fetch(`http://localhost:8080/backend/game_session.php`, {
+        const username = (document.querySelector("input[name=username]") as HTMLInputElement).value;
+
+        const response = await fetch(`http://localhost:8080/backend/game_session.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ gameId: id }),
+            credentials: 'include',
+            body: JSON.stringify({ id: id, username: username }),
         });
 
-        const data = await res.json();
+        const data = await response.json();
+        console.log(data);
         setLoading(false);
 
-        if (data.status === 'ok') {
+        if (response.ok) {
             router.push(`/game/${id}/session`);
         } else {
             alert("Failed to start game: " + data.status);
@@ -39,12 +42,10 @@ export default function GameDescription({ params, }: { params: Promise<{ id: str
 
             <div className=" flex flex-col gap-1 w-1/4">
                 <label className="text-left" htmlFor="name">Nimi</label>
-                <input className="justify-center border-2 rounded-md p-1.5" placeholder="Nimi" id="name" type="text" />
+                <input className="justify-center border-2 rounded-md p-1.5" name="username" placeholder="Nimi" id="username" type="text" />
             </div>
 
-            <Link href={`/game/${id}/session`}>
-                <Button_Primary onClick={startGame} text={loading ? "Odota..." : "Pelaa"} height="3rem" width="10rem" />
-            </Link>
+            <Button_Primary onClick={startGame} text={loading ? "Odota..." : "Pelaa"} height="3rem" width="10rem" />
         </main>
     );
 }
