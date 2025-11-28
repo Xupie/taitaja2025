@@ -9,7 +9,7 @@ export default function Admin() {
 
   useEffect(() => {
     async function checkAuth() {
-      const response = await fetch("/api/admin", {
+      const response = await fetch("http://localhost:8080/backend/admin", {
         method: 'GET',
         credentials: 'include',
       });
