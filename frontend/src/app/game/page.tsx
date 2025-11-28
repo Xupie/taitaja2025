@@ -1,5 +1,5 @@
 "use client"
-import Card, { CategoryCard } from "@/components/card";
+import { CategoryCard } from "@/components/card";
 import Carousel from "@/components/carousel";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

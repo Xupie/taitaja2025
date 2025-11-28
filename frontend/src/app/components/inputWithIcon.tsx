@@ -23,8 +23,8 @@ export default function InputWithIcon({
       className="
         basic-input
         bg-no-repeat
-        bg-[left_10px_center]
-        bg-[length:20px_20px]
+        bg-position-[left_10px_center]
+        bg-size-[20px_20px]
       "
       style={{
         backgroundImage: `url('${icon}')`,
