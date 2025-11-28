@@ -23,13 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         exit;
     }
 
-    // category_id
-    $gameId = $data['id'];
+    $username = trim(htmlspecialchars($data['username']));
+    $gameId = trim(htmlspecialchars($data['id']));
 
-    $username = trim($data['username']);
-    if ($username === "") {
+    if (empty($username) || empty($gameId)) {
         http_response_code(400);
-        echo json_encode(["status" => "empty username"]);
+        echo json_encode(["status" => "empty username or id"]);
         exit;
     }
 

@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+// user send answer
 if ($method == 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -80,18 +81,18 @@ if ($method == 'GET') {
 
     // Return options of category by id
     if (isset($_GET["id"])) {
-        $id = $_GET["id"];
+        $gameId = $_GET["id"];
 
         $currentIndex = 0;
         // Check session for last question
-        if (isset($_SESSION["games"][$id])) {
-            $currentIndex = $_SESSION["games"][$id]['question'];
+        if (isset($_SESSION["games"][$gameId])) {
+            $currentIndex = $_SESSION["games"][$gameId]['question'];
         }
 
         $correct_count = 0;
         // check session for correctly answered count
-        if (isset($_SESSION["games"][$id]["correct_count"])) {
-            $correct_count = $_SESSION["games"][$id]["correct_count"];
+        if (isset($_SESSION["games"][$gameId]["correct_count"])) {
+            $correct_count = $_SESSION["games"][$gameId]["correct_count"];
         }
 
         $stmt = $conn->prepare("
@@ -104,7 +105,7 @@ if ($method == 'GET') {
             FROM questions
             WHERE category_id=?
         ");
-        $stmt->bind_param("s", $id);
+        $stmt->bind_param("s", $gameId);
         $stmt->execute();
         $result = $stmt->get_result();
         $options = $result->fetch_all(MYSQLI_ASSOC);
@@ -116,7 +117,7 @@ if ($method == 'GET') {
         ]);
         exit;
 
-        // Return every category
+    // Return every category
     } else {
         $stmt = $conn->prepare("
             SELECT
