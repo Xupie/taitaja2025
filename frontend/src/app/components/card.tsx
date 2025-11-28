@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Button_Primary from './buttons';
 
 type CardProps = {
     bgClass?: string;
@@ -9,6 +10,14 @@ type CardProps = {
 type GameCardProps = {
     bgClass: string;
     text?: string;
+    onClick?: () => void;
+}
+
+type CategoryCardProps = {
+    bgClass: string;
+    category: string;
+    question_count: number;
+    creator: string;
     onClick?: () => void;
 }
 
@@ -50,5 +59,27 @@ export function GameCard(
         >
             {text}
         </button>
+    )
+}
+
+export function CategoryCard(
+    {
+        bgClass,
+        category,
+        question_count,
+        creator,
+        onClick,
+    }: CategoryCardProps) {
+    return (
+        <div className={`${bgClass} p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-400`}>
+            <h2 className='text-2xl font-bold mb-2'>{category}</h2>
+            <p className="text-gray-600 mb-4">Tekijä: {creator}</p>
+            <Button_Primary 
+                onClick={() => onClick?.()} 
+                height='3rem' 
+                width='8rem' 
+                text='Pelaa'
+            />
+        </div>
     )
 }
