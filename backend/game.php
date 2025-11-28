@@ -84,12 +84,13 @@ if ($method == 'GET') {
         $gameId = $_GET["id"];
 
         $currentIndex = 0;
+        $correct_count = 0;
+
         // Check session for last question
         if (isset($_SESSION["games"][$gameId])) {
             $currentIndex = $_SESSION["games"][$gameId]['question'];
         }
-
-        $correct_count = 0;
+        
         // check session for correctly answered count
         if (isset($_SESSION["games"][$gameId]["correct_count"])) {
             $correct_count = $_SESSION["games"][$gameId]["correct_count"];
