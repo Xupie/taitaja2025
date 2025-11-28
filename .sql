@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `categories` (
   `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `teacher_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -37,17 +38,17 @@ CREATE TABLE `categories` (
 -- Vedos taulusta `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `teacher_id`) VALUES
-(1, 'Historia', 1),
-(2, 'Maantiede', 1),
-(3, 'Urheilu', 1),
-(4, 'Tiede', 1),
-(5, 'Taide ja viihde', 1),
-(6, 'Historia', 2),
-(7, 'Maantiede', 2),
-(8, 'Urheilu', 2),
-(9, 'PHP', 2),
-(10, 'Vapaa-aika', 2);
+INSERT INTO `categories` (`id`, `name`, `description`, `teacher_id`) VALUES
+(1, 'Historia', NULL, 1),
+(2, 'Maantiede', NULL, 1),
+(3, 'Urheilu', NULL, 1),
+(4, 'Tiede', NULL, 1),
+(5, 'Taide ja viihde', NULL, 1),
+(6, 'Historia', NULL, 2),
+(7, 'Maantiede', NULL, 2),
+(8, 'Urheilu', NULL, 2),
+(9, 'PHP', NULL, 2),
+(10, 'Vapaa-aika', NULL, 2);
 
 -- --------------------------------------------------------
 

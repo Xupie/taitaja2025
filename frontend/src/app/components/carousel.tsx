@@ -41,7 +41,7 @@ export default function Carousel({ images }: CarouselProps) {
                 {images.map((image, i) => (
                     <div
                         key={i}
-                        className="relative h-96 flex-shrink-0"
+                        className="relative h-96 shrink-0"
                         style={{
                             width: `${100 / images.length}%`,
                         }}

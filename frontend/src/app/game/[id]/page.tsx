@@ -2,15 +2,34 @@
 
 import Button_Primary from "@/components/buttons";
 import { useRouter } from "next/navigation";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 
-export default function GameDescription({ params, }: { params: Promise<{ id: string }> }) {
+type GameDataType = {
+    name: string;
+    description: string | null;
+}
+
+export default function GameDescription({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [gameData, setGameData] = useState<GameDataType>();
     const router = useRouter();
 
-    //TODO: get info from api
-    const gameInfo = { name: "Game", description: "Description" };
+    useEffect(() => {
+        if (!id) return;
+
+        async function getGameData() {
+            const response = await fetch(`http://localhost:8080/backend/game_info.php?id=${id}`, {
+                method: 'GET',
+            });
+            let data = await response.json();
+            if (data.description == null) data.description = "Ei Kuvausta"
+            setGameData(data);
+            setLoading(false);
+        }
+
+        getGameData();
+    }, [id]);
 
     const startGame = async () => {
         setLoading(true);
@@ -35,16 +54,29 @@ export default function GameDescription({ params, }: { params: Promise<{ id: str
     };
 
     return (
-        <div className="p-4 text-center">
-            <h1 className="text-3xl font-bold">{gameInfo.name}</h1>
-            <p className="my-4">{gameInfo.description}</p>
+        <div className="flex flex-col justify-center items-center p-6 mt-10">
+            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 flex flex-col items-center">
+                <h1 className="text-4xl font-extrabold text-primary mb-4">{loading ? "loading..." : gameData?.name}</h1>
+                <p className="text-gray-600 text-center mb-6">{loading ? "loading..." : gameData?.description}</p>
 
-            <div className=" flex flex-col gap-1">
-                <label className="text-left" htmlFor="name">Nimi</label>
-                <input className="justify-center border-2 rounded-md p-1.5" name="username" placeholder="Nimi" id="username" type="text" />
+                <div className="w-full flex flex-col gap-4 mb-6">
+                    <label className="text-gray-700 font-semibold text-left" htmlFor="username">Nimi</label>
+                    <input
+                        className="border-2 border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary rounded-lg p-3 text-gray-700 transition-all duration-200 outline-none"
+                        name="username"
+                        placeholder="Nimi"
+                        id="username"
+                        type="text"
+                    />
+                </div>
+
+                <Button_Primary
+                    onClick={startGame}
+                    text={loading ? "Odota..." : "Pelaa"}
+                    height="3rem"
+                    width="12rem"
+                />
             </div>
-
-            <Button_Primary onClick={startGame} text={loading ? "Odota..." : "Pelaa"} height="3rem" width="10rem" />
         </div>
     );
 }

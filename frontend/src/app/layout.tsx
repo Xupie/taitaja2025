@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`flex flex-col min-h-screen ${LexendDeca.variable} ${inter.variable} antialiased`}
       >
         <Header />
-        <main className="grow">
+        <main className="flex-1">
           {children}
         </main>
         <Footer />
