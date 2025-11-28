@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Button_Primary from './buttons';
 
 type CardProps = {
@@ -16,7 +16,6 @@ type GameCardProps = {
 type CategoryCardProps = {
     bgClass: string;
     category: string;
-    question_count: number;
     creator: string;
     onClick?: () => void;
 }
@@ -44,6 +43,7 @@ export function GameCard(
     }: GameCardProps) {
     return (
         <button
+            type='button'
             onClick={onClick}
             className={`
                 ${bgClass} 
@@ -66,7 +66,6 @@ export function CategoryCard(
     {
         bgClass,
         category,
-        question_count,
         creator,
         onClick,
     }: CategoryCardProps) {

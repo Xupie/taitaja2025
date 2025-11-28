@@ -1,8 +1,8 @@
 "use client"
-import { CategoryCard } from "@/components/card";
-import Carousel from "@/components/carousel";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CategoryCard } from "@/components/card";
+import Carousel from "@/components/carousel";
 
 type GameType = {
   id: number;
@@ -63,7 +63,7 @@ export default function Game() {
               onClick={() => router.push(`/game/${category.id}`)} 
               category={category.category_name} 
               creator={category.teacher_username} 
-              question_count={category.question_count}>
+            >
             </CategoryCard>
           </div>
         ))}

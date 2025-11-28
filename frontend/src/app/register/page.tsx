@@ -40,6 +40,7 @@ export default function RegisterPage() {
             {error && <p className="text-red-500">{error}</p>}
 
             <button
+                type="button"
                 onClick={register}
                 disabled={loading}
                 className="bg-black text-white px-4 py-2 rounded"

@@ -34,12 +34,12 @@ export default function Login() {
 
       if (!response.ok) {
         setError(true);
-        console.log("Virhe kirjautumissa: " + data.error);
+        console.log(`Virhe·kirjautumissa: ${data.error}`);
       } else {
         alert("Kirjautuminen onnistui!");
       }
 
-    } catch (err) {
+    } catch (_err) {
       setError(true);
     }
 

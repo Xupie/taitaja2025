@@ -34,7 +34,7 @@ export default function Header() {
                     </ul>
 
                     <div className='flex items-center gap-4'>
-                        <button className='btn btn-secondary'><Link className='font-inter' href='/login'>Kirjaudu Sisään</Link></button>
+                        <button type='button' className='btn btn-secondary'><Link className='font-inter' href='/login'>Kirjaudu Sisään</Link></button>
                     </div>
                 </div>
 

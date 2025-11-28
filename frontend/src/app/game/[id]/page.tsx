@@ -22,7 +22,7 @@ export default function GameDescription({ params }: { params: Promise<{ id: stri
             const response = await fetch(`http://localhost:8080/backend/game_info.php?id=${id}`, {
                 method: 'GET',
             });
-            let data = await response.json();
+            const data = await response.json();
             if (data.description == null) data.description = "Ei Kuvausta"
             setGameData(data);
             setLoading(false);
@@ -49,7 +49,7 @@ export default function GameDescription({ params }: { params: Promise<{ id: stri
         if (response.ok) {
             router.push(`/game/${id}/session`);
         } else {
-            alert("Virhe: " + data.status);
+            alert(`"Virhe: ${data.status}`);
         }
     };
 

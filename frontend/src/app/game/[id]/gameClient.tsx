@@ -38,6 +38,8 @@ export default function GameClient({ id }: GameClientProps) {
     const [correctCount, setCorrectCount] = useState(0);
     const [leaderboards, setLeaderboards] = useState<GameLeaderboards>([]);
 
+    const router = useRouter();
+
     async function sendAnswer(answer: string) {
         const response = await fetch(`http://localhost:8080/backend/game.php`, {
             method: 'POST',
@@ -49,7 +51,6 @@ export default function GameClient({ id }: GameClientProps) {
 
         // No session
         if (response.status === 401) {
-            const router = useRouter();
             router.push("/game");
             return;
         }
@@ -73,7 +74,7 @@ export default function GameClient({ id }: GameClientProps) {
             }
             getLeaderboards();
         }
-    }, [loading, questions, currentIndex]);
+    }, [loading, questions, currentIndex, id]);
 
 
     useEffect(() => {

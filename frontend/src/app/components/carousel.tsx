@@ -17,7 +17,7 @@ export default function Carousel({ images }: CarouselProps) {
 
     // Number of images visible depending on screen size
     // 1 on mobile/tablet, 2 on desktop
-    let visible = typeof window !== "undefined" && window.innerWidth >= 1024 ? 2 : 1;
+    const visible = typeof window !== "undefined" && window.innerWidth >= 1024 ? 2 : 1;
 
     const next = () => {
         setCurrent((prev) => (prev + visible) % images.length);
@@ -38,9 +38,9 @@ export default function Carousel({ images }: CarouselProps) {
                     transform: `translateX(-${(current * 100) / images.length}%)`
                 }}
             >
-                {images.map((image, i) => (
+                {images.map((image) => (
                     <div
-                        key={i}
+                        key={image.id}
                         className="relative h-96 shrink-0"
                         style={{
                             width: `${100 / images.length}%`,
@@ -55,7 +55,7 @@ export default function Carousel({ images }: CarouselProps) {
 
                             <Image
                                 src={image.img}
-                                alt={`slide-${i}`}
+                                alt={`slide-${image.id}`}
                                 fill
                                 className="object-cover"
                             />
@@ -66,6 +66,7 @@ export default function Carousel({ images }: CarouselProps) {
 
             {/* LEFT BUTTON */}
             <button
+                type="button"
                 onClick={prev}
                 className="absolute px-5 left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white py-2 rounded-full hover:bg-black/70"
             >
@@ -74,6 +75,7 @@ export default function Carousel({ images }: CarouselProps) {
 
             {/* RIGHT BUTTON */}
             <button
+                type="button"
                 onClick={next}
                 className="absolute px-5 right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white py-2 rounded-full hover:bg-black/70"
             >
@@ -82,13 +84,14 @@ export default function Carousel({ images }: CarouselProps) {
 
             {/* DOTS (grouped by step size) */}
             <div className="absolute bottom-3 w-full flex justify-center gap-2">
-                {images.map((_, index) => {
+                {images.map((image, index) => {
                     // Only show dot for starting position of each "page"
                     if (index % visible !== 0) return null;
 
                     return (
                         <button
-                            key={index}
+                            type="button"
+                            key={image.id}
                             onClick={() => setCurrent(index)}
                             className={`w-3 h-3 rounded-full ${current === index ? "bg-white" : "bg-white/40"
                                 }`}
