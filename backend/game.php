@@ -63,7 +63,7 @@ if ($method == 'POST') {
             INSERT INTO user_answers (user_id, category_id)
             VALUES (?, ?)
         ");
-        $stmt->bind_param("ii", $userId, $game);
+        $stmt->bind_param("ii", $userId, $gameId);
         $stmt->execute();
     }
 
