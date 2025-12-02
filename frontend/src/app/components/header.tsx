@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HamburgerMenu } from './logo';
 import { useState } from 'react';
+import { Button_Secondary } from './buttons';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function Header() {
                     </ul>
 
                     <div className='flex items-center gap-4'>
-                        <button type='button' className='btn btn-secondary'><Link className='font-inter' href='/login'>Kirjaudu Sisään</Link></button>
+                        <Button_Secondary width="10rem" height="3rem" text='Kirjaudu Sisään' onClick={() => {}} />
                     </div>
                 </div>
 

@@ -10,6 +10,7 @@
   --color-secondary: #ededed;
 
   --color-error-bg: #fa7373;
+  --color-error-bg-hover: #de6262;
   --color-error-text: #9f4141;
   
   --color-foreground-hover: #445564;
@@ -30,6 +31,7 @@
   --color-primary-hover: var(--color-primary-hover);
 
   --color-error-bg: var(--color-error-bg);
+  --color-error-bg-hover: var(--color-error-bg-hover);
   --color-error-text: var(--color-error-text);
 
   --font-inter: var(--font-inter);
@@ -55,32 +57,6 @@ body {
   color: var(--foreground);
   font-family: var(--font-lexend-deca);
   transition: background 300ms ease, color 300ms ease;
-}
-
-.btn {
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: cubic-bezier();
-  transition-duration: 350ms;
-  cursor: pointer;
-}
-
-.btn-secondary {
-  background-color: var(--color-foreground);
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-foreground-hover);
-}
-
-.btn-primary {
-  background-color: var(--color-primary);
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: var(--color-primary-hover);
 }
 
 .nav-link {

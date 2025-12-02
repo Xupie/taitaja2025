@@ -1,0 +1,32 @@
+.btn {
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: cubic-bezier();
+  transition-duration: 350ms;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--color-foreground);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-foreground-hover);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-cancel {
+    background-color: var(--color-error-bg);
+}
+
+.btn-cancel:hover {
+    background-color: var(--color-error-bg-hover);
+}
