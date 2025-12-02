@@ -13,6 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+$action = $_POST['action'] ?? $_GET['action'] ?? null;
+
 // user send answer
 if ($method == 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
@@ -80,7 +82,7 @@ if ($method == 'POST') {
 if ($method == 'GET') {
 
     // Return options of category by id
-    if (isset($_GET["id"])) {
+    if($action == 'get_questions' && isset($_GET["id"])) {
         $gameId = $_GET["id"];
 
         $currentIndex = 0;
@@ -117,10 +119,21 @@ if ($method == 'GET') {
             "correct_count" => $correct_count,
         ]);
         exit;
+    }
 
     // Return every category
-    } else {
-        $stmt = $conn->prepare("
+    if ($action == 'get_categories') {
+        $teacher_id = null;
+
+        if (isset($_GET['teacher_id'])) {
+            $teacher_id = $_GET['teacher_id'];
+        }
+        
+        if (isset($_GET['me']) && isset($_SESSION['teacher_id'])) {
+            $teacher_id = $_SESSION['teacher_id'];
+        }
+
+        $sql = "
             SELECT
                 categories.id AS id,
                 categories.name AS category_name,
@@ -129,8 +142,20 @@ if ($method == 'GET') {
             FROM categories
             JOIN teachers ON categories.teacher_id = teachers.id
             LEFT JOIN questions ON questions.category_id = categories.id
-            GROUP BY categories.id, categories.name, teachers.username;
-        ");
+        ";
+
+        // filter by teacher_id if provided
+        if ($teacher_id !== null) {
+            $sql .= " WHERE categories.teacher_id = ?";
+        }
+
+        $sql .= " GROUP BY categories.id, categories.name, teachers.username";
+
+        $stmt = $conn->prepare($sql);
+
+        if ($teacher_id !== null) {
+            $stmt->bind_param("i", $teacher_id);
+        }
 
         $stmt->execute();
         $result = $stmt->get_result();

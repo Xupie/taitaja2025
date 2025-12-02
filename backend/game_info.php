@@ -5,7 +5,6 @@ header('Content-Type: application/json');
 
 $conn = getConnection();
 
-
 if ($_SERVER["REQUEST_METHOD"] === 'GET') {
     if (isset($_GET['id'])) {
         $id = trim(htmlspecialchars($_GET['id']));

@@ -21,30 +21,46 @@ if (!$conn) {
     error("Database connection error");
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    error("Invalid request method");
-}
+/**
+ * if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+ *  error("Invalid request method");
+ * }
+ * 
+ * if (!isset($_POST['action'])) {
+ *  error("No action specified");
+ * }
+ */
 
-if (!isset($_POST['action'])) {
-    error("No action specified");
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
 $action = $_POST['action'] ?? $_GET['action'] ?? null;
 
 
+// =================================================
+// login tarkistus
+// =================================================
+
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    http_response_code(401);
+    error("käyttäjä ei ole kirjautunut sisään");
+    exit;
+}
 
 // =================================================
 //   add question
 // =================================================
 if ($action === 'add_question') {
-
-    $question = trim($_POST['question']);
-    $a = trim($_POST['a']);
-    $b = trim($_POST['b']);
-    $c = trim($_POST['c']);
-    $d = trim($_POST['d']);
-    $correct = trim($_POST['correct']);
-    $category = trim($_POST['category']);
+    $data = json_decode(file_get_contents("php://input"), true);
+    $question = trim($data['question']);
+    $a = trim($data['a']);
+    $b = trim($data['b']);
+    $c = trim($data['c']);
+    $d = trim($data['d']);
+    $correct = trim($data['correct']);
+    $category = trim($data['category']);
 
     if ($question === "" || $a === "" || $b === "" || $c === "" || $d === "") {
         error("Fill all fields");
@@ -59,11 +75,11 @@ if ($action === 'add_question') {
     }
 
     $stmt = $conn->prepare("
-        INSERT INTO questions (question, option_a, option_b, option_c, option_d, correct_option, category_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO questions (question, teacher_id, option_a, option_b, option_c, option_d, correct_option, category_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
-    if (!$stmt->execute([$question, $a, $b, $c, $d, $correct, $category])) {
+    if (!$stmt->execute([$question, $_SESSION['teacher_id'], $a, $b, $c, $d, $correct, $category])) {
         error("DB Error");
     }
 

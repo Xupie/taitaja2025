@@ -81,7 +81,7 @@ export default function GameClient({ id }: GameClientProps) {
         if (!id) return;
 
         async function getData() {
-            const response = await fetch(`http://localhost:8080/backend/game.php?id=${id}`, {
+            const response = await fetch(`http://localhost:8080/backend/game.php?action=get_questions&id=${id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
