@@ -13,20 +13,20 @@ export default function Login() {
   async function sendLogin() {
     setLoading(true);
 
-    const email = (document.querySelector("input[name=email]") as HTMLInputElement).value;
+    const username = (document.querySelector("input[name=username]") as HTMLInputElement).value;
     const password = (document.querySelector("input[name=password]") as HTMLInputElement).value;
 
-    if (!email || !password) {
+    if (!username || !password) {
       setError(true);
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/login.php", {
+      const response = await fetch("http://localhost:8080/api/admin.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: email, password: password }),
+        body: JSON.stringify({ name: username, password: password }),
         credentials: 'include',
       });
 
@@ -54,8 +54,8 @@ export default function Login() {
 
             <div className="flex flex-col gap-6 pt-5 pb-6">
               <div className="text-background flex flex-col">
-                <label htmlFor="email">Sähköposti</label>
-                <InputWithIcon icon="/icons/email/email.svg" required={true} name="email" placeholder="name@email.com" type="email" />
+                <label htmlFor="text">Käyttäjänimi</label>
+                <InputWithIcon icon="/icons/email/email.svg" required={true} name="username" placeholder="käyttäjänimi" type="text" />
               </div>
 
               <div className="text-background flex flex-col">

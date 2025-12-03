@@ -1,5 +1,8 @@
 'use client'
 
+import Button_Primary, { Button_Delete, Button_Edit } from "@/components/buttons";
+import CreateCategory from "@/components/category/createCategory";
+import UpdateCategory from "@/components/category/updateCategory";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,6 +11,17 @@ export default function Admin() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<{ id: string; category_name: string, question_count: number }[]>([]);
+  const [newCategoryVisible, setNewCategoryVisible] = useState(false);
+  const [updateCategoryVisible, setUpdateCategoryVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const onClickNewCategory = () => {
+    setNewCategoryVisible(!newCategoryVisible);
+  }
+
+  const onClickUpdateCategory = () => {
+    setUpdateCategoryVisible(!updateCategoryVisible);
+  }
 
   useEffect(() => {
     async function checkAuth() {
@@ -23,7 +37,7 @@ export default function Admin() {
       }
       setLoading(false);
     }
-    
+
     async function getCategories() {
       const response = await fetch("http://localhost:8080/api/game.php?action=get_categories&me=1", {
         method: 'GET',
@@ -32,7 +46,7 @@ export default function Admin() {
 
       if (!response.ok) {
         alert("Virhe kategorioiden hakemisessa");
-        return; 
+        return;
       }
 
       setCategories(await response.json());
@@ -42,20 +56,120 @@ export default function Admin() {
     getCategories();
   }, [router]);
 
+  async function createNewCategory() {
+    const category_name = (document.querySelector("input[name=category_name]") as HTMLInputElement).value;
+    const category_description = (document.querySelector("input[name=category_description]") as HTMLInputElement).value;
+
+    const response = await fetch(`http://localhost:8080/api/admin.php?action=add_category`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        {
+          category: category_name,
+          description: category_description,
+        },
+      ),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    }
+    else {
+      alert("Virhe categorian luomisessa");
+    }
+  }
+
+  async function updateCategory() {
+    const category_name = (document.querySelector("input[name=category_name]") as HTMLInputElement).value;
+    const category_description = (document.querySelector("input[name=category_description]") as HTMLInputElement).value;
+
+    const response = await fetch(`http://localhost:8080/api/admin.php?action=update_category`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        {
+          category_name: category_name,
+          category_description: category_description,
+          category_id: selectedCategory,
+        },
+      ),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    }
+    else {
+      alert("Virhe kategorian päivittämisessä");
+    }
+  }
+
+  async function deleteCategory(category_id: string) {
+    const response = await fetch(`http://localhost:8080/api/admin.php?action=delete_category`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        {
+          category_id: category_id,
+        },
+      ),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    }
+    else {
+      alert("Virhe kategorian poistamisessa");
+    }
+  }
+
   if (loading) return <p>Loading...</p>
 
   return (
-    <div>
-      <h1>Admin Panel</h1>
+    <div className="max-w-3xl mx-auto p-6 bg-gray-50 rounded-xl md:shadow-lg flex flex-col gap-6 mt-4">
+      <h1 className="text-3xl text-center font-bold mb-2">Kategoriat</h1>
+
       <ul>
         {categories.map(category => (
-          <li key={category.id}>
+          <li className="bg-secondary rounded-xl p-4 mb-4" key={category.id}>
             <Link href={`/admin/${category.id}`}>
-              {category.category_name} - Questions: {category.question_count}
+              <p className="text-3xl">{category.category_name}</p>
+              <p className="text-md">Kysymyksiä: {category.question_count}</p>
+              <div className="flex ms-auto gap-4">
+                <Button_Edit size="2.5rem" onClick={() => {
+                  setSelectedCategory(category.id);
+                  onClickUpdateCategory();
+                }} />
+                <Button_Delete size="2.5rem" onClick={() => {
+                  deleteCategory(category.id);
+                }} />
+              </div>
+
             </Link>
           </li>
         ))}
       </ul>
+
+      <div className="flex justify-start">
+        <Button_Primary
+          height="3rem"
+          text="Uusi kategoria"
+          width="10rem"
+          onClick={onClickNewCategory}
+        />
+      </div>
+      {newCategoryVisible && (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <CreateCategory createCategory={createNewCategory} cancel={() => onClickNewCategory()} />
+        </div>
+      )}
+      {updateCategoryVisible && (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <UpdateCategory updateCategory={updateCategory} cancel={() => onClickUpdateCategory()} />
+        </div>
+      )}
     </div>
   );
 }

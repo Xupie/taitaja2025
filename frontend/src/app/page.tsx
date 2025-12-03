@@ -8,7 +8,7 @@ import Card from "./components/card";
 export default function Home() {
   const router = useRouter();
   return (
-    <div className="md:max-w-3/5 mx-auto">
+    <div className="md:max-w-3/5 md:mx-auto mx-4">
       <div className="grid grid-cols-2 my-10 items-center">
         <div className="">
           <h1 className="text-6xl">Taitaja<br />Tietotesti</h1>
@@ -27,9 +27,9 @@ export default function Home() {
           loading={"lazy"}
         />
       </div>
-      <div className="grid grid-cols-2 my-6 items-center">
+      <div className="grid md:grid-cols-2 my-6 items-center">
         <Image
-          className="shadow-[0px_4px_16px_rgba(17,17,26,0.1),0px_8px_24px_rgba(17,17,26,0.1),0px_16px_56px_rgba(17,17,26,0.1)]"
+          className="collapse md:visible shadow-[0px_4px_16px_rgba(17,17,26,0.1),0px_8px_24px_rgba(17,17,26,0.1),0px_16px_56px_rgba(17,17,26,0.1)]"
           src={`/img2.jpg`}
           alt={"img"}
           width={0}
@@ -37,6 +37,7 @@ export default function Home() {
           style={imageStyle}
           loading={"lazy"}
         />
+
         <div className="mx-4">
           <Card bgClass="bg-secondary" border={false}>
             <h1 className="text-3xl">Miten pelataan?</h1>
@@ -47,7 +48,6 @@ export default function Home() {
               <li>Pellentesque sed magna fringilla, feugiat sapien in, ultrices diam. Maecenas ullamcorper odio eget nulla auctor, eget pellentesque nibh fermentum.​</li>
             </ul>
           </Card>
-
         </div>
 
       </div>

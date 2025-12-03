@@ -1,18 +1,23 @@
-import Button_Primary, { Button_Cancel } from "./buttons";
+import Button_Primary, { Button_Cancel } from "@/components/buttons";
 
-type newQuestionProps = {
-    addQuestion: () => void;
+type updateQuestionProps = {
+    updateQuestion: () => void;
     cancel: () => void;
+    questionData?: {
+        question: string;
+        option_a: string;
+        option_b: string;
+        option_c: string;
+        option_d: string;
+    }
 }
 
-export default function NewQuestion({ addQuestion, cancel }: newQuestionProps) {
+export default function UpdateQuestion({ updateQuestion, cancel, questionData }: updateQuestionProps) {
     return (
         // Full-screen overlay
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             {/* Modal container */}
             <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
-                {/* Close button (optional) */}
-                {/* <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">&times;</button> */}
 
                 {/* Question Input */}
                 <div className="flex flex-col gap-6">
@@ -25,6 +30,7 @@ export default function NewQuestion({ addQuestion, cancel }: newQuestionProps) {
                             id="question"
                             name="question"
                             placeholder="kysymys..."
+                            defaultValue={questionData?.question}
                             className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
                     </div>
@@ -43,13 +49,14 @@ export default function NewQuestion({ addQuestion, cancel }: newQuestionProps) {
                                         name="correct"
                                         id={opt}
                                         className="accent-blue-400 w-5 h-5"
-                                        defaultChecked={idx === 0} // default first option
+                                        defaultChecked={opt === questionData?.question} // default first option
                                     />
                                     <input
                                         type="text"
                                         id={opt}
                                         name={opt}
                                         placeholder={`Vaihtoehto ${opt.toUpperCase()}`}
+                                        defaultValue={questionData?.[`option_${opt}` as keyof typeof questionData]}
                                         className="flex-1 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                                     />
                                 </label>
@@ -62,8 +69,8 @@ export default function NewQuestion({ addQuestion, cancel }: newQuestionProps) {
                         <Button_Primary
                             height="3rem"
                             width="10rem"
-                            text="Lisää"
-                            onClick={addQuestion}
+                            text="Päivitä"
+                            onClick={updateQuestion}
                         />
                         <Button_Cancel
                             height="3rem"

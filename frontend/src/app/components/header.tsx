@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { HamburgerMenu } from './logo';
 import { useState } from 'react';
 import { Button_Secondary } from './buttons';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
+    const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navLinks = [
@@ -35,7 +37,7 @@ export default function Header() {
                     </ul>
 
                     <div className='flex items-center gap-4'>
-                        <Button_Secondary width="10rem" height="3rem" text='Kirjaudu Sisään' onClick={() => {}} />
+                        <Button_Secondary width="10rem" height="3rem" text='Kirjaudu Sisään' onClick={() => router.push('/login')} />
                     </div>
                 </div>
 
