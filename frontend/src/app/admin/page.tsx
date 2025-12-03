@@ -26,7 +26,7 @@ export default function Admin() {
 
   useEffect(() => {
     async function checkAuth() {
-      const response = await fetch(`${env.API_URL}/admin.php`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin.php`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -40,7 +40,7 @@ export default function Admin() {
     }
 
     async function getCategories() {
-      const response = await fetch(`${env.API_URL}/game.php?action=get_categories&me=1`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game.php?action=get_categories&me=1`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -61,7 +61,7 @@ export default function Admin() {
     const category_name = (document.querySelector("input[name=category_name]") as HTMLInputElement).value;
     const category_description = (document.querySelector("input[name=category_description]") as HTMLInputElement).value;
 
-    const response = await fetch(`${env.API_URL}/admin.php?action=add_category`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin.php?action=add_category`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -85,7 +85,7 @@ export default function Admin() {
     const category_name = (document.querySelector("input[name=category_name]") as HTMLInputElement).value;
     const category_description = (document.querySelector("input[name=category_description]") as HTMLInputElement).value;
 
-    const response = await fetch(`${env.API_URL}/admin.php?action=update_category`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin.php?action=update_category`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -107,7 +107,7 @@ export default function Admin() {
   }
 
   async function deleteCategory(category_id: string) {
-    const response = await fetch(`${env.API_URL}/admin.php?action=delete_category`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin.php?action=delete_category`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

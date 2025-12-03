@@ -25,7 +25,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch(`${env.API_URL}/admin.php`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: username, password: password }),
@@ -36,8 +36,10 @@ export default function Login() {
 
       if (!response.ok) {
         setError(true);
-        console.log(`Virhe·kirjautumissa: ${data.error}`);
-      } else {
+        console.log(`Virhe kirjautumissa: ${data.error}`);
+      }
+
+      if (response.ok) {
         router.push("/admin");
       }
 

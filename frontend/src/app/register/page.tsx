@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/router";
 import { env } from "process";
 import { useState } from "react";
 
@@ -8,13 +9,14 @@ export default function RegisterPage() {
     const [error, setError] = useState("");
 
     async function register() {
+        const router = useRouter();
         setLoading(true);
         setError("");
 
         const name = (document.querySelector("#name") as HTMLInputElement).value;
         const password = (document.querySelector("#password") as HTMLInputElement).value;
 
-        const response = await fetch(`${env.API_URL}/register.php`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, password })
@@ -25,7 +27,7 @@ export default function RegisterPage() {
 
         if (response.ok) {
             alert("Rekisteröinti onnistui!");
-            window.location.href = "/teacher/dashboard"; // example redirect
+            router.push("/login");
         } else {
             setError(data.error || "Virhe");
         }

@@ -42,7 +42,7 @@ export default function GameClient({ id }: GameClientProps) {
     const router = useRouter();
 
     async function sendAnswer(answer: string) {
-        const response = await fetch(`${env.API_URL}/game.php`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game.php`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -66,7 +66,7 @@ export default function GameClient({ id }: GameClientProps) {
     useEffect(() => {
         if (!loading && questions.length && currentIndex >= questions.length) {
             async function getLeaderboards() {
-                const response = await fetch(`${env.API_URL}/game_leaderboards.php?id=${id}`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game_leaderboards.php?id=${id}`, {
                     method: 'GET',
                 });
                 const data: GameLeaderboards = await response.json();
@@ -82,7 +82,7 @@ export default function GameClient({ id }: GameClientProps) {
         if (!id) return;
 
         async function getData() {
-            const response = await fetch(`${env.API_URL}/game.php?action=get_questions&id=${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game.php?action=get_questions&id=${id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',

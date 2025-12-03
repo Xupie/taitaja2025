@@ -18,7 +18,7 @@ export default function Game() {
 
   useEffect(() => {
     async function getGames() {
-      const response = await fetch(`${env.API_URL}/game.php?action=get_categories`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/game.php?action=get_categories`, {
         method: 'GET',
       });
       const data: GameType = await response.json();
