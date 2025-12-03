@@ -6,7 +6,7 @@ export default function Logout() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:8080/backend/logout.php", {
+        fetch("http://localhost:8080/api/logout.php", {
             credentials: 'include',
         });
         cookieStore.delete("PHPSESSID")

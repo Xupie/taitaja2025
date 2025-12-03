@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./backend:/var/www/html/backend
+      - ./api:/var/www/html/api
       - .env:/var/www/html/.env
       - ./apache-cors.conf:/etc/apache2/conf-enabled/cors.conf
     environment:

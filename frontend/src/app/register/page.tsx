@@ -13,7 +13,7 @@ export default function RegisterPage() {
         const name = (document.querySelector("#name") as HTMLInputElement).value;
         const password = (document.querySelector("#password") as HTMLInputElement).value;
 
-        const response = await fetch("http://localhost:8080/backend/register.php", {
+        const response = await fetch("http://localhost:8080/api/register.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, password })

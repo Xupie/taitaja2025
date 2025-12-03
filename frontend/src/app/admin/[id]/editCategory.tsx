@@ -27,7 +27,7 @@ export default function EditCategory({ id }: { id: string }) {
 
     useEffect(() => {
         async function getCategoryData() {
-            const response = await fetch(`http://localhost:8080/backend/game.php?action=get_questions&id=${id}`, {
+            const response = await fetch(`http://localhost:8080/api/game.php?action=get_questions&id=${id}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -47,7 +47,7 @@ export default function EditCategory({ id }: { id: string }) {
         const d = (document.querySelector("input[name=d]") as HTMLInputElement).value;
         const correct = (document.querySelector("input[name=correct]:checked") as HTMLInputElement).id;
 
-        const response = await fetch(`http://localhost:8080/backend/admin.php?action=add_question`, {
+        const response = await fetch(`http://localhost:8080/api/admin.php?action=add_question`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

@@ -11,7 +11,7 @@ export default function Admin() {
 
   useEffect(() => {
     async function checkAuth() {
-      const response = await fetch("http://localhost:8080/backend/admin.php", {
+      const response = await fetch("http://localhost:8080/api/admin.php", {
         method: 'GET',
         credentials: 'include',
       });
@@ -25,7 +25,7 @@ export default function Admin() {
     }
     
     async function getCategories() {
-      const response = await fetch("http://localhost:8080/backend/game.php?action=get_categories&me=1", {
+      const response = await fetch("http://localhost:8080/api/game.php?action=get_categories&me=1", {
         method: 'GET',
         credentials: 'include',
       });
