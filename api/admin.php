@@ -8,12 +8,14 @@ $conn = getConnection();
 // =================================================
 // HELPERS
 // =================================================
-function response($data) {
+function response($data)
+{
     echo json_encode($data);
     exit;
 }
 
-function error($msg) {
+function error($msg)
+{
     response(["status" => "error", "message" => $msg]);
 }
 
@@ -63,14 +65,17 @@ if ($action === 'add_question') {
     $category = trim($data['category']);
 
     if ($question === "" || $a === "" || $b === "" || $c === "" || $d === "") {
+        http_response_code(400);
         error("Fill all fields");
     }
 
     if (!in_array($correct, ['a', 'b', 'c', 'd'])) {
+        http_response_code(400);
         error("Invalid correct answer");
     }
 
     if (!ctype_digit($category)) {
+        http_response_code(400);
         error("Invalid category");
     }
 
@@ -80,6 +85,7 @@ if ($action === 'add_question') {
     ");
 
     if (!$stmt->execute([$question, $_SESSION['teacher_id'], $a, $b, $c, $d, $correct, $category])) {
+        http_response_code(400);
         error("DB Error");
     }
 
@@ -90,10 +96,11 @@ if ($action === 'add_question') {
 //   delete question
 // =================================================
 if ($action === 'delete_question') {
-
-    $id = trim($_POST['question_id']);
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = trim($data['question_id']);
 
     if (!ctype_digit($id)) {
+        http_response_code(400);
         error("Invalid ID");
     }
 
@@ -109,24 +116,27 @@ if ($action === 'delete_question') {
 //   update question
 // =================================================
 if ($action === 'update_question') {
-
-    $id = trim($_POST['id']);
-    $question = trim($_POST['question']);
-    $a = trim($_POST['a']);
-    $b = trim($_POST['b']);
-    $c = trim($_POST['c']);
-    $d = trim($_POST['d']);
-    $correct = trim($_POST['correct']);
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = trim($data['id']);
+    $question = trim($data['question']);
+    $a = trim($data['a']);
+    $b = trim($data['b']);
+    $c = trim($data['c']);
+    $d = trim($data['d']);
+    $correct = trim($data['correct']);
 
     if (!ctype_digit($id)) {
+        http_response_code(400);
         error("Invalid ID");
     }
 
     if ($question === "" || $a === "" || $b === "" || $c === "" || $d === "") {
+        http_response_code(400);
         error("Fill all fields");
     }
 
     if (!in_array($correct, ['a', 'b', 'c', 'd'])) {
+        http_response_code(400);
         error("Invalid correct answer");
     }
 
@@ -137,6 +147,7 @@ if ($action === 'update_question') {
     ");
 
     if (!$stmt->execute([$question, $a, $b, $c, $d, $correct, $id])) {
+        http_response_code(400);
         error("DB Error");
     }
 
@@ -149,16 +160,19 @@ if ($action === 'update_question') {
 //   add category
 // =================================================
 if ($action === 'add_category') {
-
-    $category = trim($_POST['category']);
+    $data = json_decode(file_get_contents("php://input"), true);
+    $category = trim($data['category']);
+    $description = trim($data['description']);
 
     if ($category === "") {
+        http_response_code(400);
         error("Category name is empty");
     }
 
-    $stmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
+    $stmt = $conn->prepare("INSERT INTO categories (name, description, teacher_id) VALUES (?, ?, ?)");
 
-    if (!$stmt->execute([$category])) {
+    if (!$stmt->execute([$category, $description, $_SESSION['teacher_id']])) {
+        http_response_code(400);
         error("DB Error");
     }
 
@@ -172,12 +186,13 @@ if ($action === 'add_category') {
 if ($action === 'show_results') {
 
     if (!isset($_GET["id"]) || !ctype_digit($_GET["id"])) {
+        http_response_code(400);
         error("Invalid category ID");
     }
 
     $id = (int)$_GET["id"];
 
-/** @var PDOStatement $stmt */
+    /** @var PDOStatement $stmt */
     $stmt = $conn->prepare("
         SELECT
             users.username AS username,
@@ -191,10 +206,12 @@ if ($action === 'show_results') {
     ");
 
     if (!$stmt) {
+        http_response_code(400);
         error("Prepare failed");
     }
 
     if (!$stmt->execute([$id])) {
+        http_response_code(400);
         error("DB Error");
     }
 
@@ -206,6 +223,57 @@ if ($action === 'show_results') {
     ]);
 }
 
-response(["status" => "error", "message" => "Unknown action"]);
+// =================================================
+//   edit category
+// =================================================
+if ($action === 'update_category') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $category_id = trim($data['category_id']);
+    $category_name = trim($data['category_name']);
+    $category_description = trim($data['category_description']);
 
-?>
+    if ($category_id === "" || $category_name === "") {
+        http_response_code(400);
+        error("Fill all fields");
+    }
+
+    $stmt = $conn->prepare("
+        UPDATE categories
+        SET name = ?, description = ?
+        WHERE id = ?
+    ");
+
+    if (!$stmt->execute([$category_name, $category_description, $category_id])) {
+        http_response_code(400);
+        error("DB Error");
+    }
+
+    response(["status" => "ok"]);
+}
+
+// =================================================
+//   delete category
+// =================================================
+if ($action === 'delete_category') {
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $category_id = trim($data['category_id']);
+
+    if ($category_id === "") {
+        http_response_code(400);
+        error("Category id is empty");
+    }
+
+    $stmt = $conn->prepare("DELETE FROM categories WHERE id = ?");
+
+    if (!$stmt->execute([$category_id])) {
+        http_response_code(400);
+        error("DB Error");
+    }
+
+    response(["status" => "ok"]);
+}
+
+
+
+response(["status" => "error", "message" => "Unknown action"]);
