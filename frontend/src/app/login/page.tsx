@@ -3,10 +3,12 @@
 import Button_Primary from "@/components/buttons";
 import Card from "@/components/card";
 import InputWithIcon from "@/components/inputWithIcon";
+import { useRouter } from "next/navigation";
+import { env } from "process";
 import { useState } from "react";
 
 export default function Login() {
-
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -23,7 +25,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/admin.php", {
+      const response = await fetch(`${env.API_URL}/admin.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: username, password: password }),
@@ -36,7 +38,7 @@ export default function Login() {
         setError(true);
         console.log(`Virhe·kirjautumissa: ${data.error}`);
       } else {
-        alert("Kirjautuminen onnistui!");
+        router.push("/admin");
       }
 
     } catch (_err) {

@@ -12,7 +12,7 @@ export default function UpdateCategory({ updateCategory, cancel }: updateCategor
             {/* Modal container */}
             <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
 
-                <h1 className="text-3xl text-center">Luo kategoria</h1>
+                <h1 className="text-3xl text-center">Muokkaa kategoriaa</h1>
                 {/* Question Input */}
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col my-2">

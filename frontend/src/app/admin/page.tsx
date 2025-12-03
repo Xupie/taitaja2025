@@ -5,6 +5,7 @@ import CreateCategory from "@/components/category/createCategory";
 import UpdateCategory from "@/components/category/updateCategory";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { env } from "process";
 import { useEffect, useState } from "react";
 
 export default function Admin() {
@@ -25,7 +26,7 @@ export default function Admin() {
 
   useEffect(() => {
     async function checkAuth() {
-      const response = await fetch("http://localhost:8080/api/admin.php", {
+      const response = await fetch(`${env.API_URL}/admin.php`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -39,7 +40,7 @@ export default function Admin() {
     }
 
     async function getCategories() {
-      const response = await fetch("http://localhost:8080/api/game.php?action=get_categories&me=1", {
+      const response = await fetch(`${env.API_URL}/game.php?action=get_categories&me=1`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -60,7 +61,7 @@ export default function Admin() {
     const category_name = (document.querySelector("input[name=category_name]") as HTMLInputElement).value;
     const category_description = (document.querySelector("input[name=category_description]") as HTMLInputElement).value;
 
-    const response = await fetch(`http://localhost:8080/api/admin.php?action=add_category`, {
+    const response = await fetch(`${env.API_URL}/admin.php?action=add_category`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -73,7 +74,7 @@ export default function Admin() {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
+      setNewCategoryVisible(false);
     }
     else {
       alert("Virhe categorian luomisessa");
@@ -84,7 +85,7 @@ export default function Admin() {
     const category_name = (document.querySelector("input[name=category_name]") as HTMLInputElement).value;
     const category_description = (document.querySelector("input[name=category_description]") as HTMLInputElement).value;
 
-    const response = await fetch(`http://localhost:8080/api/admin.php?action=update_category`, {
+    const response = await fetch(`${env.API_URL}/admin.php?action=update_category`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -98,7 +99,7 @@ export default function Admin() {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
+      setUpdateCategoryVisible(false);
     }
     else {
       alert("Virhe kategorian päivittämisessä");
@@ -106,7 +107,7 @@ export default function Admin() {
   }
 
   async function deleteCategory(category_id: string) {
-    const response = await fetch(`http://localhost:8080/api/admin.php?action=delete_category`, {
+    const response = await fetch(`${env.API_URL}/admin.php?action=delete_category`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -136,18 +137,17 @@ export default function Admin() {
           <li className="bg-secondary rounded-xl p-4 mb-4" key={category.id}>
             <Link href={`/admin/${category.id}`}>
               <p className="text-3xl">{category.category_name}</p>
-              <p className="text-md">Kysymyksiä: {category.question_count}</p>
-              <div className="flex ms-auto gap-4">
-                <Button_Edit size="2.5rem" onClick={() => {
-                  setSelectedCategory(category.id);
-                  onClickUpdateCategory();
-                }} />
-                <Button_Delete size="2.5rem" onClick={() => {
-                  deleteCategory(category.id);
-                }} />
-              </div>
-
             </Link>
+            <p className="text-md">Kysymyksiä: {category.question_count}</p>
+            <div className="flex ms-auto gap-4">
+              <Button_Edit size="2.5rem" onClick={() => {
+                setSelectedCategory(category.id);
+                onClickUpdateCategory();
+              }} />
+              <Button_Delete size="2.5rem" onClick={() => {
+                deleteCategory(category.id);
+              }} />
+            </div>
           </li>
         ))}
       </ul>

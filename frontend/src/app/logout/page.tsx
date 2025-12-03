@@ -1,12 +1,13 @@
 'use client'
 import { useRouter } from "next/navigation";
+import { env } from "process";
 import { useEffect } from "react"
 
 export default function Logout() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/logout.php", {
+        fetch(`${env.API_URL}/logout.php`, {
             credentials: 'include',
         });
         cookieStore.delete("PHPSESSID")

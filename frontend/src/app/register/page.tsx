@@ -1,5 +1,6 @@
 "use client";
 
+import { env } from "process";
 import { useState } from "react";
 
 export default function RegisterPage() {
@@ -13,7 +14,7 @@ export default function RegisterPage() {
         const name = (document.querySelector("#name") as HTMLInputElement).value;
         const password = (document.querySelector("#password") as HTMLInputElement).value;
 
-        const response = await fetch("http://localhost:8080/api/register.php", {
+        const response = await fetch(`${env.API_URL}/register.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, password })

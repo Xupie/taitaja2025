@@ -2,6 +2,7 @@
 
 import Button_Primary from "@/components/buttons";
 import { useRouter } from "next/navigation";
+import { env } from "process";
 import { use, useEffect, useState } from "react";
 
 type GameDataType = {
@@ -19,7 +20,7 @@ export default function GameDescription({ params }: { params: Promise<{ id: stri
         if (!id) return;
 
         async function getGameData() {
-            const response = await fetch(`http://localhost:8080/api/game_info.php?id=${id}`, {
+            const response = await fetch(`${env.API_URL}/game_info.php?id=${id}`, {
                 method: 'GET',
             });
             const data = await response.json();
@@ -36,7 +37,7 @@ export default function GameDescription({ params }: { params: Promise<{ id: stri
 
         const username = (document.querySelector("input[name=username]") as HTMLInputElement).value;
 
-        const response = await fetch(`http://localhost:8080/api/game_session.php`, {
+        const response = await fetch(`${env.API_URL}/game_session.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

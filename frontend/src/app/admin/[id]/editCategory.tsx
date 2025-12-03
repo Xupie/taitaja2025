@@ -4,6 +4,7 @@ import Button_Primary, { Button_Delete, Button_Edit, Button_Secondary } from "@/
 import NewQuestion from "@/components/question/newQuestion";
 import UpdateQuestion from "@/components/question/updateQuestion";
 import { useRouter } from "next/navigation";
+import { env } from "process";
 import { useEffect, useState } from "react";
 
 type questionDataType = {
@@ -36,7 +37,7 @@ export default function EditCategory({ id }: { id: string }) {
 
     useEffect(() => {
         async function getCategoryData() {
-            const response = await fetch(`http://localhost:8080/api/game.php?action=get_questions&id=${id}`, {
+            const response = await fetch(`${env.API_URL}/game.php?action=get_questions&id=${id}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -56,7 +57,7 @@ export default function EditCategory({ id }: { id: string }) {
         const d = (document.querySelector("input[name=d]") as HTMLInputElement).value;
         const correct = (document.querySelector("input[name=correct]:checked") as HTMLInputElement).id;
 
-        const response = await fetch(`http://localhost:8080/api/admin.php?action=add_question`, {
+        const response = await fetch(`${env.API_URL}/admin.php?action=add_question`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -83,7 +84,7 @@ export default function EditCategory({ id }: { id: string }) {
     }
 
     async function deleteQuestion(question_id: number) {
-        const response = await fetch(`http://localhost:8080/api/admin.php?action=delete_question`, {
+        const response = await fetch(`${env.API_URL}/admin.php?action=delete_question`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -111,7 +112,7 @@ export default function EditCategory({ id }: { id: string }) {
         const d = (document.querySelector("input[name=d]") as HTMLInputElement).value;
         const correct = (document.querySelector("input[name=correct]:checked") as HTMLInputElement).id;
 
-        const response = await fetch(`http://localhost:8080/api/admin.php?action=update_question`, {
+        const response = await fetch(`${env.API_URL}/admin.php?action=update_question`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
